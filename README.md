@@ -1,9 +1,10 @@
-# IOAM Collector (golang interface for Jaeger)
+# IOAM Collector for New Relic's OTLP endpoint
 
-The IOAM Collector is used inside the [Cross-Layer Telemetry](https://github.com/Advanced-Observability/cross-layer-telemetry) (CLT) project.
+## Original work can be found at https://github.com/Advanced-Observability
 
-Its role is to enhance OpenTelemetry traces and spans for a specific backend (in
-this case, Jaeger) with IOAM data.
+The IOAM Collector is used inside the [Cross-Layer Telemetry](https://github.com/jbiggley/cross-layer-telemetry) (CLT) project.
+
+Its role is to enhance OpenTelemetry traces and spans for a specific backend (New Relic) with IOAM data.
 
 By default, it listens on port **7123**.
 
@@ -16,7 +17,7 @@ example, golang version **1.19** was used.
 
 Get the IOAM API (proto3) file **for Cross-Layer Telemetry** (CLT branch):
 ```[bash]
-wget https://raw.githubusercontent.com/Advanced-Observability/ioam-api/clt/ioam_api.proto
+wget https://raw.githubusercontent.com/jbiggley/ioam-api/clt/ioam_api.proto
 ```
 
 And generate its `go` files:
