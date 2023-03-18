@@ -2,7 +2,7 @@
 
 ## Original work can be found at https://github.com/Advanced-Observability
 
-The IOAM Collector [https://github.com/jbiggley/ioam-collector-go/blob/main/ioam-collector.go] is used inside the [Cross-Layer Telemetry](https://github.com/jbiggley/cross-layer-telemetry) (CLT) project.
+The [IOAM Collector](https://github.com/jbiggley/ioam-collector-go/blob/main/ioam-collector.go) is used inside the [Cross-Layer Telemetry](https://github.com/jbiggley/cross-layer-telemetry) (CLT) project.
 
 Its role is to enhance OpenTelemetry traces and spans for a specific backend (New Relic) with IOAM data.
 
