@@ -1,19 +1,21 @@
 package main
 
 import (
-	"encoding/hex"
+	"context"
 	"encoding/binary"
+	"encoding/hex"
 	"log"
 	"net"
 	"strconv"
 
 	empty "google.golang.org/protobuf/types/known/emptypb"
-	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/exporters/jaeger"
+	"go.opentelemetry.io/otel/exporters/otlp"
+	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/trace"
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
@@ -37,17 +39,34 @@ var MASK_BIT11	= uint32(1 << 20) // Buffer Occupancy
 var MASK_BIT22	= uint32(1 <<  9) // Opaque State Snapshot
 
 func main() {
-	exp, err := jaeger.New(jaeger.WithCollectorEndpoint())
+	ctx := context.Background()
+
+	clientOpts := []otlp.ClientOption{
+		otlp.WithEndpoint("otlp.nr-data.net:4317"),
+		otlp.WithTLSCredentials(),
+		otlp.WithHeaders(map[string]string{
+			"api-key": "<INSERT_YOUR_NEW_RELIC_API_KEY_HERE>",
+		}),
+	}
+
+	metricClient, err := otlpmetric.New(ctx, clientOpts...)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	traceClient, err := otlptrace.New(ctx, clientOpts...)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	tp := tracesdk.NewTracerProvider(
-		tracesdk.WithBatcher(exp),
+		tracesdk.WithBatcher(traceClient),
 		tracesdk.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
 			semconv.ServiceNameKey.String("CLT-demo"),
 		)),
 	)
+
 	otel.SetTracerProvider(tp)
 
 	grpcServer := grpc.NewServer()
