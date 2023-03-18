@@ -21,7 +21,7 @@ import (
 	tracesdk "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
 
-	"ioam-collector/github.com/Advanced-Observability/ioam-api"
+	"ioam-collector/github.com/jbiggley/ioam-api"
 )
 
 var MASK_BIT0	= uint32(1 << 31) // Hop_Lim + Node Id (short format)
